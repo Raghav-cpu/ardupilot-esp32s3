@@ -1,0 +1,47 @@
+name: Build ArduPilot ESP32S3
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  plane:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y python3-pip git
+      - run: |
+          python3 waf configure --board esp32s3n16r8
+          python3 waf plane
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plane-esp32s3n16r8
+          path: build/esp32s3n16r8/bin/*
+
+  copter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y python3-pip git
+      - run: |
+          python3 waf configure --board esp32s3n16r8
+          python3 waf copter
+      - uses: actions/upload-artifact@v4
+        with:
+          name: copter-esp32s3n16r8
+          path: build/esp32s3n16r8/bin/*
+
+  rover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y python3-pip git
+      - run: |
+          python3 waf configure --board esp32s3n16r8
+          python3 waf rover
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rover-esp32s3n16r8
+          path: build/esp32s3n16r8/bin/*
